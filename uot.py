@@ -35,7 +35,7 @@ classes = [
 def match_class(class_name):
     for i in range(len(classes)):
          if classes[i] in class_name:
-              return classes[i]
+              return i
     print(f"{class_name} not found in classes list") # This is bad
 
 def create_dataset(root_dir, output_dir, split_ratio=[0.6, 0.2, 0.2]):
@@ -134,3 +134,4 @@ def create_dataset(root_dir, output_dir, split_ratio=[0.6, 0.2, 0.2]):
             # Write normalized data to file
             f.write(f"{obj_class} {x_center / width} {y_center / height} {box_width / width} {box_height / height}")
 
+create_dataset('./dataset/UOT_raw/', './dataset/UOT_dataset')
