@@ -9,34 +9,37 @@ from PIL import Image
 
 # Recommendation: Test training on a small subset of classes and check performance on that before expanding to ALL 21 classes.
 
-classes = [  
-  'ArmyDiver',
-  'Ballena',
-  'BlueFish',
-  'BoySwimming',
-  'CenoteAngelita',
-  'DeepSeaFish',
-  'Dolphin',
-  'Fisherman',
-  'FishFollowing',
-  'GarryFish',
-  'HoverFish',
-  'JerkbaitBites',
-  'MonsterCreature',
-  'Octopus',
-  'PinkFish',
-  'SeaDiver',
-  'SeaDragon',
-  'SeaTurtle',
-  'Steinlager',
-  'WhaleAtBeach',
-  'WhaleDiving',
-  'WhiteShark']
+classes = [
+    'ArmyDiver',
+    'Ballena',
+    'BlueFish',
+    'BoySwimming',
+    'CenoteAngelita',
+    'DeepSeaFish',
+    'Dolphin',
+    'Fisherman',
+    'FishFollowing',
+    'GarryFish',
+    'HoverFish',
+    'JerkbaitBites',
+    'MonsterCreature',
+    'Octopus',
+    'PinkFish',
+    'SeaDiver',
+    'SeaDragon',
+    'SeaTurtle',
+    'Steinlager',
+    'WhaleAtBeach',
+    'WhaleDiving',
+    'WhiteShark']
+
+
 def match_class(class_name):
     for i in range(len(classes)):
-         if classes[i] in class_name:
-              return i
-    print(f"{class_name} not found in classes list") # This is bad
+        if classes[i] in class_name:
+            return i
+    print(f"{class_name} not found in classes list")  # This is bad
+
 
 def create_dataset(root_dir, output_dir, split_ratio=[0.6, 0.2, 0.2]):
     """
@@ -72,7 +75,7 @@ def create_dataset(root_dir, output_dir, split_ratio=[0.6, 0.2, 0.2]):
                 for i, line in enumerate(f):
                     line = line.strip()
                     if line:
-                        image_files.append(os.path.join(img_dir, f'{i+1}.jpg'))
+                        image_files.append(os.path.join(img_dir, f'{i + 1}.jpg'))
                         label_files.append(line)
 
     # Split image and label files into train/val/test sets
@@ -86,20 +89,20 @@ def create_dataset(root_dir, output_dir, split_ratio=[0.6, 0.2, 0.2]):
     test_indices = indices[val_split:]
 
     # Copy image files to output directory and  write label files to output directory
-    for i, idx in enumerate(train_indices):     
+    for i, idx in enumerate(train_indices):
         # Get width and height of image - resize to one dimension as 640
         with Image.open(image_files[idx]) as img:
-                    width, height = img.size
-                    if width >= height:
-                         new_width = 640
-                         new_height = int(round(640 * (float(height)/width)))
-                    else:
-                        new_width = int(round(640 * (float(width)/height)))
-                        new_height = 640
-                    img = img.resize((new_width, new_height))
-                    # Save resized img
-                    img.save(os.path.join(output_dir, 'images', 'train', f'{i}.jpg'))
-                    #shutil.copyfile(image_files[idx], os.path.join(output_dir, 'images', 'train', f'{i}.jpg'))
+            width, height = img.size
+            if width >= height:
+                new_width = 640
+                new_height = int(round(640 * (float(height) / width)))
+            else:
+                new_width = int(round(640 * (float(width) / height)))
+                new_height = 640
+            img = img.resize((new_width, new_height))
+            # Save resized img
+            img.save(os.path.join(output_dir, 'images', 'train', f'{i}.jpg'))
+            # shutil.copyfile(image_files[idx], os.path.join(output_dir, 'images', 'train', f'{i}.jpg'))
 
         with open(os.path.join(output_dir, 'labels', 'train', f'{i}.txt'), 'w') as f:
             # Parse data from input
@@ -116,17 +119,17 @@ def create_dataset(root_dir, output_dir, split_ratio=[0.6, 0.2, 0.2]):
     for i, idx in enumerate(val_indices):
         # Get width and height of image - resize to one dimension as 640
         with Image.open(image_files[idx]) as img:
-                    width, height = img.size
-                    if width >= height:
-                         new_width = 640
-                         new_height = int(640 * (float(height)/width))
-                    else:
-                        new_width = int(640 * (float(width)/height))
-                        new_height = 640
-                    img = img.resize((new_width, new_height))
-                    # Save resized img
-                    img.save(os.path.join(output_dir, 'images', 'val', f'{i}.jpg'))
-                    #shutil.copyfile(image_files[idx], os.path.join(output_dir, 'images', 'train', f'{i}.jpg'))
+            width, height = img.size
+            if width >= height:
+                new_width = 640
+                new_height = int(640 * (float(height) / width))
+            else:
+                new_width = int(640 * (float(width) / height))
+                new_height = 640
+            img = img.resize((new_width, new_height))
+            # Save resized img
+            img.save(os.path.join(output_dir, 'images', 'val', f'{i}.jpg'))
+            # shutil.copyfile(image_files[idx], os.path.join(output_dir, 'images', 'train', f'{i}.jpg'))
 
         with open(os.path.join(output_dir, 'labels', 'val', f'{i}.txt'), 'w') as f:
             # Parse data from input
@@ -141,17 +144,17 @@ def create_dataset(root_dir, output_dir, split_ratio=[0.6, 0.2, 0.2]):
     for i, idx in enumerate(test_indices):
         # Get width and height of image - resize to one dimension as 640
         with Image.open(image_files[idx]) as img:
-                    width, height = img.size
-                    if width >= height:
-                         new_width = 640
-                         new_height = int(640 * (float(height)/width))
-                    else:
-                        new_width = int(640 * (float(width)/height))
-                        new_height = 640
-                    img = img.resize((new_width, new_height))
-                    # Save resized img
-                    img.save(os.path.join(output_dir, 'images', 'test', f'{i}.jpg'))
-                    #shutil.copyfile(image_files[idx], os.path.join(output_dir, 'images', 'train', f'{i}.jpg'))
+            width, height = img.size
+            if width >= height:
+                new_width = 640
+                new_height = int(640 * (float(height) / width))
+            else:
+                new_width = int(640 * (float(width) / height))
+                new_height = 640
+            img = img.resize((new_width, new_height))
+            # Save resized img
+            img.save(os.path.join(output_dir, 'images', 'test', f'{i}.jpg'))
+            # shutil.copyfile(image_files[idx], os.path.join(output_dir, 'images', 'train', f'{i}.jpg'))
         with open(os.path.join(output_dir, 'labels', 'test', f'{i}.txt'), 'w') as f:
             # Parse data from input
             top_leftx, top_lefty, box_width, box_height = [float(x) for x in label_files[idx].split()]
@@ -163,4 +166,5 @@ def create_dataset(root_dir, output_dir, split_ratio=[0.6, 0.2, 0.2]):
             # Write normalized data to file
             f.write(f"{obj_class} {x_center / width} {y_center / height} {box_width / width} {box_height / height}")
 
-create_dataset('./dataset/UOT_raw/', './dataset/UOT_dataset')
+
+create_dataset('../../dataset/UOT_dataset/', './dataset/UOT_dataset')
